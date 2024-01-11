@@ -1,9 +1,9 @@
 export const words = {
     size: 1,
     list:[
-        { word: "far", meaning: "遠い(f)" },
+        { word: "far", meaning: "遠い" },
         { word: "from", meaning: "～から" },
-        { word: "soon", meaning: "すぐに(s)" },
+        { word: "soon", meaning: "すぐに" },
         { word: "dish", meaning: "料理・皿"},
         { word: "reservation", meaning: "予約"},
 
@@ -40,7 +40,8 @@ export function setWord(){
     if(quizMode == 1){
         while(!words.weak_flags[currentQuestionIndex]) currentQuestionIndex += 1;
     }
-    questionElement.textContent = `「${words.list[currentQuestionIndex].meaning}」`;
+    questionElement.textContent = 
+    `「${words.list[currentQuestionIndex].meaning} (${words.list[currentQuestionIndex].word.charAt(0)})」`;
 
     // HTML内の要素を取得
     const quizTitleElement = document.getElementById("quiz-title");
