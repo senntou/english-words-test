@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英単語</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="module" src="utils.js"></script>
+</head>
+<body>
+    
+    <div id="title-container">
+        <h1>英単語</h1>
+        <button id="help-button" onclick="openModal()">?</button>
+        <button id="title-start-button" onclick="startQuiz(0)">スタート</button>
+        <button id="title-start-button" onclick="startQuiz(1)">苦手克服</button>
+    </div>
+    
+    <div id="quiz-container" style="display: none;">
+        <h1 id="quiz-title">英単語</h1>
+        <p id="question"></p>
+        <input type="text" id="answerInput" placeholder="答えを入力">
+        <button id="quiz-button" onclick="checkAnswer()">回答</button>
+        <p id="result"></p>
+    </div>
+    
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="word-list"></div>
+        </div>
+    </div>
+    
+    <script type="module" src="app.js"></script>
+</body>
+</html>
