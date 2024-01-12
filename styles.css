@@ -52,7 +52,6 @@ body {
     cursor: pointer;
     font-size: 1.2em;
     text-align: center; /* テキストを中央寄せするために追加 */
-    line-height: 30px; /* ボタンの高さと一致させる */
     transition: background-color 0.3s;
 }
 
@@ -72,6 +71,10 @@ body {
 
 #quiz-container button:hover {
     background-color: #2980b9;
+}
+
+#answer-input {
+    font-size: 16px;
 }
 
 

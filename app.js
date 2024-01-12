@@ -2,7 +2,7 @@ import { finalQuestion, generateWordTable, getCurrentWord, setCorrect, setWord,s
 
 // HTML要素の取得
 const questionElement = document.getElementById("question");
-const answerInputElement = document.getElementById("answerInput");
+const answerInputElement = document.getElementById("answer-input");
 const resultElement = document.getElementById("result");
 const titleContainer = document.getElementById("title-container");
 const quizContainer = document.getElementById("quiz-container");
@@ -26,10 +26,8 @@ window.startQuiz = function startQuiz(m) {
 function initializeQuiz(m) {
     words_reset(m);
     setWord();
-    const nextButtonElement = document.getElementById("quiz-button");
-    nextButtonElement.onclick = checkAnswer;
-    nextButtonElement.textContent = "回答";
-    resultElement.textContent = "";}
+    resetQuizElement();
+}
 
 function exitQuestion(){
     titleContainer.style.display = "block";
@@ -40,10 +38,16 @@ function nextQuestion(){
     if(!setWord()){
         return ;
     }
+    resetQuizElement();
+}
+
+function resetQuizElement(){
     const nextButtonElement = document.getElementById("quiz-button");
     nextButtonElement.onclick = checkAnswer;
     nextButtonElement.textContent = "回答";
     resultElement.textContent = "";
+    answerInputElement.value = "";
+    answerInputElement.focus();
 }
 
 // 回答のチェック
