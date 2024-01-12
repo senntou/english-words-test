@@ -15,12 +15,35 @@ export const words = {
         // 他の単語も追加
     ],
     solved_flags:[],
-    weak_flags:[]
 }
 
 let quizMode = 0;
 
 let currentQuestionIndex = -1;
+
+// ブラウザのクッキーにboolean型の配列を保存する関数
+window.setCookie = function setCookie() {
+    const expires = new Date();
+    const days = 30;
+    expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+    document.cookie = `english-words-test=${JSON.stringify(words.solved_flags)};expires=${expires.toUTCString()};path=/`;
+}
+
+// ブラウザのクッキーからboolean型の配列を読み取る関数
+window.getCookie = function getCookie() {
+    const cookieName = `english-words-test=`;
+    const cookies = document.cookie.split(';');
+
+    for (let i = 0; i < cookies.length; i++) {
+        let cookie = cookies[i].trim();
+        if (cookie.indexOf(cookieName) === 0) {
+            const cookieValue = cookie.substring(cookieName.length, cookie.length);
+            return JSON.parse(cookieValue);
+        }
+    }
+
+    return null;
+}
 
 export function words_reset(m){
     quizMode = m;
@@ -28,9 +51,12 @@ export function words_reset(m){
 }
 export function words_init(){
     words.size = words.list.length;
-    for(let i = 0;i < words.size;i++){
-        words.solved_flags[i] = false;
-        words.weak_flags[i] = false;
+    words.solved_flags = getCookie();
+    if(words.solved_flags === null){
+        words.solved_flags = [];
+        for(let i = 0;i < words.size;i++){
+            words.solved_flags[i] = 0;
+        }
     }
 }
 export function setWord(){
@@ -38,7 +64,7 @@ export function setWord(){
     currentQuestionIndex += 1;
     if(currentQuestionIndex == words.size) return false;
     if(quizMode == 1){
-        while(!words.weak_flags[currentQuestionIndex]) currentQuestionIndex += 1;
+        while(!(words.solved_flags[currentQuestionIndex] === 2)) currentQuestionIndex += 1;
     }
     questionElement.textContent = 
     `「${words.list[currentQuestionIndex].meaning} (${words.list[currentQuestionIndex].word.charAt(0)})」`;
@@ -53,10 +79,12 @@ export function setWord(){
     return true;
 }
 export function setCorrect(){
-    words.solved_flags[currentQuestionIndex] = true;
+    words.solved_flags[currentQuestionIndex] = 1;
+    setCookie();
 }
 export function setWrong(){
-    words.weak_flags[currentQuestionIndex] = true;
+    words.solved_flags[currentQuestionIndex] = 2;
+    setCookie();
 }
 export function getCurrentWord(){   
     return words.list[currentQuestionIndex].word;
@@ -65,7 +93,7 @@ export function finalQuestion(){
     if(quizMode == 1){
         let idx = currentQuestionIndex;
         idx += 1;
-        while(idx < words.size && !words.weak_flags[idx]) idx += 1;
+        while(idx < words.size && !(words.solved_flags[idx] === 3)) idx += 1;
         if(idx == words.size) return true;
         return false;
     }
@@ -106,9 +134,6 @@ export function generateWordTable(containerId) {
         wordCell.textContent = word.word;
         meaningCell.textContent = word.meaning;
     
-        // solved_flags の情報を表示する（ここではテキストとして表示）
-        solvedCell.textContent = words.solved_flags[i] ? 'OK' : '  ';
-    
         row.appendChild(wordCell);
         row.appendChild(meaningCell);
         row.appendChild(solvedCell);
@@ -123,8 +148,8 @@ export function updateWordTable(){
     for(let i = 0;i < words.size;i++){
         const solvedCell = document.getElementById("solved-cell-" + i);
         let check = '　';
-        if(words.solved_flags[i])    check = 'OK';
-        else if(words.weak_flags[i]) check = 'NG'
+        if(words.solved_flags[i] === 1)    check = 'OK';
+        else if(words.solved_flags[i] === 2) check = 'NG'
         solvedCell.textContent = check;
     }
 }

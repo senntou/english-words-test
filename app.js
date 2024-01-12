@@ -76,6 +76,4 @@ window.checkAnswer = function checkAnswer() {
 words_init();
 generateWordTable("word-list");
 
-const cookie = document.cookie;
-console.log(cookie); // key=value; key=value; key=value; key=value; key=value; key=value;
-console.log("OK");
+console.log(document.cookie);
