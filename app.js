@@ -1,4 +1,4 @@
-import { finalQuestion, generateWordTable, getCurrentWord, setCorrect, setWord,setWrong,words, words_init, words_reset } from "./words.js";
+import { finalQuestion, generateWordTable, getCurrentPP, setCorrect, setWord,setWrong,words, words_init, words_reset } from "./words.js";
 
 // HTML要素の取得
 const questionElement = document.getElementById("question");
@@ -53,7 +53,7 @@ function resetQuizElement(){
 // 回答のチェック
 window.checkAnswer = function checkAnswer() {
     const userAnswer = answerInputElement.value.trim().toLowerCase();
-    const correctAnswer = getCurrentWord();
+    const correctAnswer = getCurrentPP();
 
     if (userAnswer === correctAnswer) {
         resultElement.textContent = "正解！🎉";
@@ -74,6 +74,5 @@ window.checkAnswer = function checkAnswer() {
 }
 
 words_init();
-generateWordTable("word-list");
 
 console.log(document.cookie);
